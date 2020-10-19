@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Cubetimer</title>
+    <link rel="Stylesheet" href="css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="js/timer.js"></script>
+</head>
+<body>
+
+    <div class="jumbotron">
+        <div class="container">
+            <div class="row">
+
+                <div class="d-none d-sm-block col-sm-4">
+                    <img alt="cube-picture" src="img/cube.png" style="height:10em">
+                </div>
+                <div class="col-sm-8 align-self-center">
+                    <h1>Cube Cycle</h1>
+                </div>
+    
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        
+        <div class="row flex-row-reverse">
+
+            <div class="col-sm-8">
+                <h3>B L2 D R2 U R2 U L2 D' B2 U F2 U2 F' D L' D' B D B R</h3>
+                <p id="time" class=" h4 text-center" style="margin-top: 1em">0.00</p>
+                <br>
+                <p class="text-center">
+                    <button type="button" class="btn btn-secondary" disabled>+2</button>
+                    <button type="button" class="btn btn-danger" disabled>DNF</button>
+                    <button type="button" class="btn btn-primary" disabled>SEND TIME</button>
+                </p>
+            </div>
+
+            <div class="col-sm-4" style="background-attachment: lightgray;">
+                <h3>Room</h3>
+                <hr>
+                <p>NAME: Jupitersi</p>
+                <p>TYPE: 3x3</p>
+                <p>TIMEOUT: 30s</p>
+            </div>
+                
+        </div>
+        <h3 style="margin-top:1em">USERS TIMES</h3>
+        <div class="row">
+            
+            <table class="table table-bordered table-responsive" style="max-height:50vh">
+            
+                <tr>
+                    <th>On.</th>
+                    <% for(var i=1; i<=4; i++){ %>
+                        <th>Johnfsdfsf <%= i %></th>
+                    <% } %>
+                </tr>
+                <%for(var j=1; j<=7; j++) { %>
+                <tr>
+                    <td><%= j %></td> 
+                    <% for(var i=1; i<=4; i++){ %>
+                        <td><%= Math.round(Math.random()*1000)/100 %></td>
+                    <% } %>
+                </tr>
+
+                <% } %>
+            </table>
+                
+        </div>
+        
+    </div>
+
+    <script src="js/bootstrap.min.js"></script>
+</body>
+</html>
