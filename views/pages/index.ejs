@@ -10,7 +10,7 @@
 </head>
 <body>
 
-    <div class="jumbotron">
+    <div class="jumbotron mb-1">
         <div class="container">
             <div class="row">
 
@@ -24,9 +24,23 @@
             </div>
         </div>
     </div>
-
+    
     <div class="container">
-        
+        <nav class="navbar navbar-expand-sm navbar-light bg-light">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <form class="form-inline my-2 my-lg-0 ml-auto">
+                    <div class="form-group mr-3">
+                        <b>Username: </b> <%= name %>
+                    </div>
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Log Out</button>
+                </form>
+            </div>
+        </nav>
+
         <div class="row">
             <% for(var i=1; i<=7; i++){ %>
             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
