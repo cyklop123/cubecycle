@@ -1,50 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Cubetimer</title>
-    <link rel="Stylesheet" href="css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <%- include('../partials/head') %>
     <script src="js/timer.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="js/room.js"></script>
 </head>
 <body>
 
-    <div class="jumbotron">
-        <div class="container">
-            <div class="row">
-
-                <div class="d-none d-sm-block col-sm-4">
-                    <img alt="cube-picture" src="img/cube.png" style="height:10em">
-                </div>
-                <div class="col-sm-8 align-self-center">
-                    <h1>Cube Cycle</h1>
-                </div>
-    
-            </div>
-        </div>
-    </div>
+    <%- include('../partials/header') %>
 
     <div class="container">
-        <nav class="navbar navbar-expand-sm navbar-light bg-light">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-    
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <form class="form-inline my-2 my-lg-0 ml-auto" action="/logout?_method=DELETE" method="POST">
-                    <div class="form-group mr-3">
-                        <b>Username: </b> <%= name %>
-                    </div>
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Log Out</button>
-                </form>
-            </div>
-        </nav>
+        <% if (typeof name !== 'undefined') { %>
+            <%- include('../partials/navbar') %>
+        <% } %>
         
-        <div class="row flex-row-reverse">
+        <div class="row flex-row-reverse mt-4">
 
             <div class="col-sm-8">
                 <h3>B L2 D R2 U R2 U L2 D' B2 U F2 U2 F' D L' D' B D B R</h3>
@@ -92,6 +63,6 @@
         
     </div>
 
-    <script src="js/bootstrap.min.js"></script>
+    <%- include('../partials/footer') %>
 </body>
 </html>

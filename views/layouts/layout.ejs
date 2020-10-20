@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <%- include('../partials/head') %>
+</head>
+<body>
+
+    <%- include('../partials/header') %>
+    
+    <div class="container">
+
+        <% if (typeof name !== 'undefined') { %>
+            <%- include('../partials/navbar') %>
+        <% } %>
+
+        <h3 class="mt-4"><%= title %></H3>
+        
+        <% if(messages.error) { %>
+            <%= messages.error %>
+        <% } %>
+        <div class="row">
+            <%- body %>
+        </div>
+    </div>
+
+    <%- include('../partials/footer') %>
+</body>
+</html>
