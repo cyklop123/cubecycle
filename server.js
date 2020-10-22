@@ -9,6 +9,7 @@ const expressLayouts = require('express-ejs-layouts')
 const mongoose = require('mongoose')
 const flash = require('express-flash')
 const session = require('express-session')
+const mongoStore = require('connect-mongo')(session)
 const passport = require('passport')
 const methodOverride = require('method-override')
 
@@ -27,7 +28,8 @@ app.use(flash());
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    store: new mongoStore({ url: process.env.DB_CONNECTION_STRING })
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -35,7 +37,8 @@ app.use(methodOverride('_method'));
 
 /* Init modules */
 const passportInit = require('./config/passport-config')(passport)
-const indexRoute = require('./routes/index')
+const indexRoute = require('./routes/index');
+const { MongoStore } = require('connect-mongo');
 indexRoute(passport)
 
 /* Database connection */
