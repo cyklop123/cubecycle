@@ -6,9 +6,11 @@ const express = require('express')
 const http = require('http')
 const socketio = require('socket.io')
 const expressLayouts = require('express-ejs-layouts')
-const path = require('path')
-
-const indexRouter = require('./routes/index')
+const mongoose = require('mongoose')
+const flash = require('express-flash')
+const session = require('express-session')
+const passport = require('passport')
+const methodOverride = require('method-override')
 
 const app = express();
 const server = http.createServer(app);
@@ -20,8 +22,33 @@ app.set('layout', './layouts/layout')
 app.set('layout room', 'false')
 
 app.use(express.static('public'));
+app.use(express.urlencoded({extended: false}));
+app.use(flash());
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(methodOverride('_method'));
 
-app.use('/', indexRouter)
+/* Init modules */
+const passportInit = require('./config/passport-config')(passport)
+const indexRoute = require('./routes/index')
+indexRoute(passport)
+
+/* Database connection */
+mongoose.connect(process.env.DB_CONNECTION_STRING, {useNewUrlParser: true, useUnifiedTopology: true})
+const db = mongoose.connection
+db.on('error', error => console.error(error))
+db.once('open', () => console.log('Connected to database'))
+
+app.use('/', indexRoute.router)
+
+io.use((socket, next)=>{
+    console.log(socket.request)
+})
 
 io.on('connection',(socket)=>{
     console.log('New connection',socket.id);
