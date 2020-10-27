@@ -1,0 +1,1 @@
+var socket = io('/room', {'transports':['websocket'], upgrade: false});

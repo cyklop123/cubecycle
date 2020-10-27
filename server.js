@@ -41,7 +41,6 @@ app.use(methodOverride('_method'));
 /* Init modules */
 const passportInit = require('./config/passport-config')(passport)
 const indexRoute = require('./routes/index');
-const { MongoStore } = require('connect-mongo');
 indexRoute(passport)
 io.use(passportSocketIo.authorize({
     key: 'connect.sid',
@@ -59,8 +58,10 @@ db.once('open', () => console.log('Connected to database'))
 
 app.use('/', indexRoute.router)
 
-io.on('connection',(socket)=>{
-    console.log('New connection',socket.id);
-});
+const list = io.of('/list')
+const room = io.of('/room')
+
+const a = require('./routes/sockets/list')(list)
+const b = require('./routes/sockets/room')(room)
 
 server.listen(8080,()=> console.log(`Server is listening at port 8080`));
