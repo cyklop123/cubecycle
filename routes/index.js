@@ -31,15 +31,20 @@ exports = module.exports = function(passport){
     /* Authorized routes */
     router.get('/', checkAuth, (req,res)=>{
         res.render('pages/index.ejs', {
-            title:'Cubecycle',
+            title:'Rooms',
             name: req.user.login });
     });
 
     router.get('/room', checkAuth, (req, res)=>{
+        res.redirect('/')
+    });
+
+    router.get('/room/:id', checkAuth, (req, res)=>{
         res.render('pages/room.ejs', {
             title:'Room',
             layout: false,
-            name: req.user.login });
+            name: req.user.login,
+            id: req.params.id});
     });
 }
 
@@ -52,6 +57,12 @@ function checkAuth(req, res, next) {
 function checkNotAuth(req, res, next) {
     if (req.isAuthenticated()) return res.redirect('/')
     return next();
+}
+
+/* Verify if user is on t*/
+function limitSockets(req, res, next)
+{
+
 }
 
 exports.router = router

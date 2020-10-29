@@ -1,23 +1,68 @@
-<% for(var i=1; i<=7; i++){ %>
-<div class="col-12 col-sm-6 col-md-4 col-lg-3">
-    <div class="card mt-2">
-        <div class="card-header">
-            Room name <%= i %>
-            </div>
-            <img class="card-img-top w-50 p-1 m-auto" src="img/3x3.png" alt="Card image cap">
-            <ul class="list-group list-group-flush">
-            <li class="list-group-item">Type: 3x3</li>
-            <li class="list-group-item">Timeout: 30s</li>
-            <li class="list-group-item">Admin: jhon1</li>
-            </ul>
-            <div class="card-body">
-            <a href="room" class="btn btn-primary btn-block">Join</a>
-            </div>
-            <div class="card-footer text-muted">
-            <%= (Math.random()>0.5) ? 'Private' : 'Public' %>
-            </div>
+<div class="d-flex flex-row-reverse">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addRoom">Add room</button>
+    <button type="button" class="btn btn-primary mr-1" id="refresh">&#x1f5d8;</button>
+</div>
+<div class="row" id="rooms-list">
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+        <div class="card mt-2">
+            <div class="card-header">
+                Room name
+                </div>
+                <img class="card-img-top w-50 p-1 m-auto" src="img/3x3.png" alt="Card image cap">
+                <ul class="list-group list-group-flush">
+                <li class="list-group-item">Type: 3x3</li>
+                <li class="list-group-item">Timeout: 30s</li>
+                <li class="list-group-item">Admin: jhon1</li>
+                </ul>
+                <div class="card-body">
+                <a href="room" class="btn btn-primary btn-block">Join</a>
+                </div>
+                <div class="card-footer text-muted">
+                    Public
+                </div>
+        </div>
     </div>
 </div>
-<% } %>
+
+<div class="modal fade" id="addRoom" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form id="addRoom">
+            <div class="modal-header">
+                <h5 class="modal-title">Add room</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="name" class="col-form-label">Name</label>
+                    <input type="text" id="name" class="form-control" placeholder="Enter name" name="name" required>
+                </div>
+                <div class="form-group">
+                  <label for="type">Type</label>
+                  <select class="form-control" id="type" required>
+                    <option default>3x3</option>
+                    <option>4x4</option>
+                    <option>5x5</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                    <label for="timeout" class="col-form-label">Timeout</label>
+                    <input type="number" id="timeout" min="5" class="form-control" name="timeout" required>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="col-form-label">Password</label>
+                    <input type="password" id="password" class="form-control" name="password">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Add room</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
 <script src="/socket.io/socket.io.js"></script>
 <script src="js/sockets/list.js"></script>

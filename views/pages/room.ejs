@@ -2,9 +2,9 @@
 <html>
 <head>
     <%- include('../partials/head') %>
-    <script src="js/timer.js"></script>
+    <script src="/js/timer.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="js/sockets/room.js"></script>
+    <script src="/js/sockets/room.js"></script>
 </head>
 <body>
 
@@ -29,7 +29,7 @@
             </div>
 
             <div class="col-sm-4" style="background-attachment: lightgray;">
-                <h3>Room</h3>
+                <h3>Room id: <%= id %></h3>
                 <hr>
                 <p>NAME: Jupitersi</p>
                 <p>TYPE: 3x3</p>
