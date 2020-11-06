@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 
+const Room = require('../models/room')
+
 exports = module.exports = function(passport){
     /* Authentication routes */
     router.get('/login', checkNotAuth, (req, res)=>
@@ -39,7 +41,7 @@ exports = module.exports = function(passport){
         res.redirect('/')
     });
 
-    router.get('/room/:id', checkAuth, (req, res)=>{
+    router.get('/room/:id', checkAuth, checkUserInRoom, (req, res)=>{
         res.render('pages/room.ejs', {
             title:'Room',
             layout: false,
@@ -59,10 +61,26 @@ function checkNotAuth(req, res, next) {
     return next();
 }
 
-/* Verify if user is on t*/
-function limitSockets(req, res, next)
+/* Verify if user is in room */
+async function checkUserInRoom(req, res, next)
 {
-
+    try{
+        let room = await Room.findOne({_id: req.params.id})
+        if (room.users.includes(req.user.id))
+        {
+            res.redirect('/')
+        }
+        else
+        {
+            room.users.push(req.user.id)
+            await room.save()
+            next()
+        }
+    }
+    catch(err)
+    {
+        res.redirect('/')
+    }
 }
 
 exports.router = router

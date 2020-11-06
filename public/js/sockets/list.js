@@ -17,7 +17,12 @@ $("#refresh").on('click', event => {
 
 io.on('rooms', rooms => {
     $("#addRoom").modal('hide')
-    $("#rooms-list").empty();    
+    $("#rooms-list").empty();
+    if(rooms.length < 1)
+    {
+        $("#rooms-list").text("There is no rooms. Click add room to create new.")
+        return;
+    }
     rooms.forEach(room => {
         $("#rooms-list").append(`
         <div class="col-12 col-sm-6 col-md-4 col-lg-3">
