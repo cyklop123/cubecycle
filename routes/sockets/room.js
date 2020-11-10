@@ -1,24 +1,48 @@
+const { find } = require('../../models/room');
+const room = require('../../models/room');
 const Room = require('../../models/room')
+const generateScramble = require('../../utils/scrambler')
 
 exports = module.exports = function(io) {
-    //room manager
-    //tablica z roomami 
     io.on('connection', socket => {
-        // console.log('New connection',socket.id, socket.request.user.id, socket.handshake.query.roomid);
-        socket.join(socket.handshake.query.roomid)
+        var roomid = socket.handshake.query.roomid;
+        var userid = socket.request.user.id
+        socket.join(roomid)
+        checkIfStartOrStopRound(roomid)
         
 
+        socket.on('time', async time => {
+            try{
+                let room = await Room.findById(roomid)
+                const roundUserIndex = room.round.participants.findIndex(el => el.user_id == userid)
+                if(roundUserIndex >= 0)
+                {
+                    room.round.participants[roundUserIndex].time = time
+                    room.round.participants[roundUserIndex].state = 2
+                    await room.save()
+                    checkIfStartOrStopRound(roomid)
+                }
+            }
+            catch(err)
+            {
+                console.log(err)
+            }
+        })
 
         socket.on('disconnect', async () => {
-            //remover user form room
             try{
-                let room = await Room.findOne({_id: socket.handshake.query.roomid});
-                const userIndex = room.users.indexOf(socket.request.user.id)
+                let room = await Room.findOne({_id: roomid});
+                const userIndex = room.users.indexOf(userid)
                 if(userIndex >= 0)
-                {
                     room.users.splice(userIndex, 1)
-                    await room.save()
-                }
+
+                const roundUserIndex = room.round.participants.findIndex(el => el.user_id == userid)
+                if(roundUserIndex >= 0)
+                    room.round.participants[roundUserIndex].active = false
+
+                await room.save()
+
+                checkIfStartOrStopRound(roomid) 
             }
             catch(err)
             {
@@ -26,4 +50,54 @@ exports = module.exports = function(io) {
             }
         })
     })
+
+    async function checkIfStartOrStopRound(roomid)
+    {
+        try{
+            let room = await Room.findOne({_id: roomid});
+            if (room.solving)
+            {
+                let stop = true;
+                room.round.participants.forEach(participant => {
+                    if (participant.active && participant.state == 1)
+                        stop = false
+                })
+                if(room.round.end.getTime() < Date.now())
+                    stop = true
+                if (stop)
+                {
+                    room.solving = false
+                    await room.save()
+                    io.in(roomid).emit('stop round')
+                    checkIfStartOrStopRound(roomid)
+                }
+            }
+            else
+            {
+                if(room.users.length)
+                {
+                    room.round.participants = []
+                    room.users.forEach(userId => {
+                        room.round.participants.push({user_id: userId})
+                    })
+                    room.solving = true;
+                    room.updateRoundTimes()
+                    await room.save()
+                    scramble = generateScramble(room.type)
+                    setTimeout(() => io.in(roomid).emit('start round', {scramble: scramble, start: room.round.start, end: room.round.end}), 500)
+                }
+            }
+        }
+        catch(err)
+        {
+            console.log(err)
+        }
+    }
+
+    setInterval(async () => {
+        let rooms = await Room.find()
+        rooms.forEach(async room => {
+            await checkIfStartOrStopRound(room._id)
+        })
+    }, 1000)
 }

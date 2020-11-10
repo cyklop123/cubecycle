@@ -46,7 +46,7 @@ exports = module.exports = function(passport){
             title:'Room',
             layout: false,
             name: req.user.login,
-            id: req.params.id});
+            room: req.room});
     });
 }
 
@@ -74,6 +74,11 @@ async function checkUserInRoom(req, res, next)
         {
             room.users.push(req.user.id)
             await room.save()
+            req.room = {
+                name: room.name,
+                type: room.type,
+                timeout: room.timeout
+            }
             next()
         }
     }

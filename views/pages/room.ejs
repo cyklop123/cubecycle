@@ -18,25 +18,28 @@
         <div class="row flex-row-reverse mt-4">
 
             <div class="col-sm-8">
-                <h3>B L2 D R2 U R2 U L2 D' B2 U F2 U2 F' D L' D' B D B R</h3>
-                <p id="time" class=" h4 text-center" style="margin-top: 1em">0.00</p>
+                <h3 id="scramble"></h3>
+                <p class="text-center" id="message"></p>
+                <p id="time" class="h4 text-center" style="margin-top: 1em">0.00</p>
                 <br>
                 <p class="text-center">
-                    <button type="button" class="btn btn-secondary" disabled>+2</button>
-                    <button type="button" class="btn btn-danger" disabled>DNF</button>
-                    <button type="button" class="btn btn-primary" disabled>SEND TIME</button>
+                    <button id="plus2" type="button" class="btn btn-secondary" disabled>+2</button>
+                    <button id="dnf" type="button" class="btn btn-danger" disabled>DNF</button>
+                    <button id="sendResult" type="button" class="btn btn-primary" disabled>SEND TIME</button>
                 </p>
             </div>
 
             <div class="col-sm-4" style="background-attachment: lightgray;">
-                <h3>Room id: <%= id %></h3>
+                <h3>Room</h3>
                 <hr>
-                <p>NAME: Jupitersi</p>
-                <p>TYPE: 3x3</p>
-                <p>TIMEOUT: 30s</p>
+                <p><b>NAME:</b> <%= room.name %></p>
+                <p><b>TYPE:</b> <%= room.type %></p>
+                <p><b>TIMEOUT:</b> <%= room.timeout %>s</p>
             </div>
                 
         </div>
+
+
         <h3 style="margin-top:1em">USERS TIMES</h3>
         <div class="row">
             
