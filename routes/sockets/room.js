@@ -8,6 +8,7 @@ exports = module.exports = function(io) {
         var roomid = socket.handshake.query.roomid;
         var userid = socket.request.user.id
         socket.join(roomid)
+        io.in(roomid).emit('user connect', {login: socket.request.user.login})
         checkIfStartOrStopRound(roomid)
         
 
@@ -20,6 +21,7 @@ exports = module.exports = function(io) {
                     room.round.participants[roundUserIndex].time = time
                     room.round.participants[roundUserIndex].state = 2
                     await room.save()
+                    io.in(roomid).emit('time', {user: socket.request.user.login, time})
                     checkIfStartOrStopRound(roomid)
                 }
             }
@@ -99,5 +101,5 @@ exports = module.exports = function(io) {
         rooms.forEach(async room => {
             await checkIfStartOrStopRound(room._id)
         })
-    }, 1000)
+    },  process.env.TIMEOUT_CHECK_INTERVAL)
 }

@@ -1,71 +1,60 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <%- include('../partials/head') %>
-    <script src="/js/timer.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/js/sockets/room.js"></script>
-</head>
-<body>
+      
+<div class="row flex-row-reverse mt-4">
 
-    <%- include('../partials/header') %>
-
-    <div class="container">
-        <% if (typeof name !== 'undefined') { %>
-            <%- include('../partials/navbar') %>
-        <% } %>
-        
-        <div class="row flex-row-reverse mt-4">
-
-            <div class="col-sm-8">
-                <h3 id="scramble"></h3>
-                <p class="text-center" id="message"></p>
-                <p id="time" class="h4 text-center" style="margin-top: 1em">0.00</p>
-                <br>
-                <p class="text-center">
-                    <button id="plus2" type="button" class="btn btn-secondary" disabled>+2</button>
-                    <button id="dnf" type="button" class="btn btn-danger" disabled>DNF</button>
-                    <button id="sendResult" type="button" class="btn btn-primary" disabled>SEND TIME</button>
-                </p>
-            </div>
-
-            <div class="col-sm-4" style="background-attachment: lightgray;">
-                <h3>Room</h3>
-                <hr>
-                <p><b>NAME:</b> <%= room.name %></p>
-                <p><b>TYPE:</b> <%= room.type %></p>
-                <p><b>TIMEOUT:</b> <%= room.timeout %>s</p>
-            </div>
-                
-        </div>
-
-
-        <h3 style="margin-top:1em">USERS TIMES</h3>
-        <div class="row">
-            
-            <table class="table table-bordered table-responsive" style="max-height:50vh">
-            
-                <tr>
-                    <th>On.</th>
-                    <% for(var i=1; i<=4; i++){ %>
-                        <th>Johnfsdfsf <%= i %></th>
-                    <% } %>
-                </tr>
-                <%for(var j=1; j<=7; j++) { %>
-                <tr>
-                    <td><%= j %></td> 
-                    <% for(var i=1; i<=4; i++){ %>
-                        <td><%= Math.round(Math.random()*1000)/100 %></td>
-                    <% } %>
-                </tr>
-
-                <% } %>
-            </table>
-                
-        </div>
-        
+    <div class="col-sm-8">
+        <h3 id="scramble"> </h3>
+        <p class="text-center" id="message"></p>
+        <p id="time" class="h4 text-center" style="margin-top: 1em">0.00</p>
+        <br>
+        <p class="text-center">
+            <button id="plus2" type="button" class="btn btn-secondary" disabled>+2</button>
+            <button id="dnf" type="button" class="btn btn-danger" disabled>DNF</button>
+            <button id="sendResult" type="button" class="btn btn-primary" disabled>SEND TIME</button>
+        </p>
     </div>
 
-    <%- include('../partials/footer') %>
-</body>
-</html>
+    <div class="col-sm-4">
+        <h3>Room</h3>
+        <hr>
+        <table>
+            <tr>
+                <td class="pr-3"><b>NAME:</b></td>
+                <td><%= room.name %></td>
+            </tr>
+            <tr>
+                <td class="pr-3"><b>TYPE:</b></td>
+                <td><%= room.type %></td>
+            </tr>
+            <tr>
+                <td class="pr-3"><b>TIMEOUT:</b></td>
+                <td><%= room.timeout %>s</td>
+            </tr>
+        </table>
+    </div>
+        
+</div>
+
+
+<h3 style="margin-top:1em">USERS TIMES</h3>
+<div class="row">
+    
+    <table class="table table-bordered table-responsive" style="max-height:50vh">
+        <thead id="res-h">
+            <!-- <tr>
+                <th>On.</th>
+                <th>Johnfsdfsf </th>
+            </tr> -->
+        </thead>
+        <tbody id="res-b">
+            <!-- <tr>
+                <td>1</td> 
+                <td>10.12</td>
+            </tr> -->
+        </tbody>
+    </table>
+        
+</div>
+
+<script src="/js/timer.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/sockets/room.js"></script>

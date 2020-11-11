@@ -1,4 +1,4 @@
 node_modules/
-package-lock.json
 message_flow
 .env
+*.old

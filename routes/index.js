@@ -44,7 +44,6 @@ exports = module.exports = function(passport){
     router.get('/room/:id', checkAuth, checkUserInRoom, (req, res)=>{
         res.render('pages/room.ejs', {
             title:'Room',
-            layout: false,
             name: req.user.login,
             room: req.room});
     });

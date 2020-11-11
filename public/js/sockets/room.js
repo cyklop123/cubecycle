@@ -14,6 +14,10 @@ socket.on('start round', data => {
 
 socket.on('stop round', () => lockTimer())
 
+socket.on('time', data => {
+    console.log(data)
+})
+
 $(() => {
     $(`#sendResult`).on('click', () => {
         const val = $('#time').text()
