@@ -75,4 +75,4 @@ const room = io.of('/room')
 const a = require('./routes/sockets/list')(list)
 const b = require('./routes/sockets/room')(room)
 
-server.listen(8080,()=> console.log(`Server is listening at port 8080`));
+server.listen(process.env.PORT,()=> console.log(`Server is listening at port 8080`));
