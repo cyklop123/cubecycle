@@ -6,11 +6,19 @@
         <p class="text-center" id="message"></p>
         <p id="time" class="h4 text-center" style="margin-top: 1em">0.00</p>
         <br>
-        <p class="text-center">
-            <button id="plus2" type="button" class="btn btn-secondary" disabled>+2</button>
-            <button id="dnf" type="button" class="btn btn-danger" disabled>DNF</button>
+        <div class="text-center">
+            <div class="btn-group-toggle d-inline" data-toggle="buttons">
+                <label class="btn btn-secondary">
+                    <input id="plus2" type="checkbox" autocomplete="off">+2
+                </label>
+            </div>
+            <div class="btn-group-toggle d-inline" data-toggle="buttons">
+                <label class="btn btn-secondary">
+                    <input id="dnf" type="checkbox" autocomplete="off">DNF
+                </label>
+            </div>
             <button id="sendResult" type="button" class="btn btn-primary" disabled>SEND TIME</button>
-        </p>
+        </div>
     </div>
 
     <div class="col-sm-4">
@@ -40,21 +48,14 @@
     
     <table class="table table-bordered table-responsive" style="max-height:50vh">
         <thead id="res-h">
-            <!-- <tr>
-                <th>On.</th>
-                <th>Johnfsdfsf </th>
-            </tr> -->
+            <tr></tr>
         </thead>
-        <tbody id="res-b">
-            <!-- <tr>
-                <td>1</td> 
-                <td>10.12</td>
-            </tr> -->
-        </tbody>
+        <tbody id="res-b"></tbody>
     </table>
         
 </div>
 
 <script src="/js/timer.js"></script>
 <script src="/socket.io/socket.io.js"></script>
+<script src="/js/res-manager.js"></script>
 <script src="/js/sockets/room.js"></script>

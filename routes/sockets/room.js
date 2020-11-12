@@ -7,10 +7,16 @@ exports = module.exports = function(io) {
     io.on('connection', socket => {
         var roomid = socket.handshake.query.roomid;
         var userid = socket.request.user.id
+        var userLogin = socket.request.user.login
         socket.join(roomid)
-        io.in(roomid).emit('user connect', {login: socket.request.user.login})
         checkIfStartOrStopRound(roomid)
         
+        Room.findById(roomid).populate('users').exec((err, room) => {
+            let users = []
+            room.users.forEach(user => users.push(user.login))
+            socket.emit('user list', users)
+            socket.broadcast.to(roomid).emit('user connect', userLogin)
+        })
 
         socket.on('time', async time => {
             try{
@@ -21,7 +27,7 @@ exports = module.exports = function(io) {
                     room.round.participants[roundUserIndex].time = time
                     room.round.participants[roundUserIndex].state = 2
                     await room.save()
-                    io.in(roomid).emit('time', {user: socket.request.user.login, time})
+                    io.in(roomid).emit('time', {user: userLogin, time})
                     checkIfStartOrStopRound(roomid)
                 }
             }
@@ -43,6 +49,8 @@ exports = module.exports = function(io) {
                     room.round.participants[roundUserIndex].active = false
 
                 await room.save()
+                
+                io.in(roomid).emit('user disconnect', userLogin)
 
                 checkIfStartOrStopRound(roomid) 
             }
@@ -86,7 +94,7 @@ exports = module.exports = function(io) {
                     room.updateRoundTimes()
                     await room.save()
                     scramble = generateScramble(room.type)
-                    setTimeout(() => io.in(roomid).emit('start round', {scramble: scramble, start: room.round.start, end: room.round.end}), 500)
+                    setTimeout(() => io.in(roomid).emit('start round', {scramble: scramble, start: room.round.start, end: room.round.end}), 1000)
                 }
             }
         }
