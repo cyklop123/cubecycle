@@ -1,7 +1,9 @@
+const sanitize = require('sanitize-html');
 const { find } = require('../../models/room');
 const room = require('../../models/room');
 const Room = require('../../models/room')
 const generateScramble = require('../../utils/scrambler')
+const sanitizeHtml = require('sanitize-html')
 
 exports = module.exports = function(io) {
     io.on('connection', socket => {
@@ -21,6 +23,7 @@ exports = module.exports = function(io) {
         socket.on('time', async time => {
             try{
                 let room = await Room.findById(roomid)
+                time = sanitizeHtml(time, { allowedTags: [], allowedAttributes: {} })
                 const roundUserIndex = room.round.participants.findIndex(el => el.user_id == userid)
                 if(roundUserIndex >= 0)
                 {

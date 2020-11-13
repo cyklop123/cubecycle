@@ -1,4 +1,5 @@
 const Room = require('../../models/room')
+const sanitizeHtml = require('sanitize-html')
 
 exports = module.exports = function(io){
     io.on('connection', async socket => {
@@ -6,8 +7,11 @@ exports = module.exports = function(io){
         io.emit('rooms', rooms)
 
         socket.on('add room', room=>{
-            let newRoom = new Room(room);
-            newRoom.admin = socket.request.user.id
+            const name = sanitizeHtml(room.name, { allowedTags: [], allowedAttributes: {} })
+            const type = sanitizeHtml(room.type, { allowedTags: [], allowedAttributes: {} })
+            const timeout = sanitizeHtml(room.timeout, { allowedTags: [], allowedAttributes: {} })
+            const password = sanitizeHtml(room.password, { allowedTags: [], allowedAttributes: {} })
+            let newRoom = new Room({name, type, timeout, password, admin: socket.request.user.id});
             newRoom.save(async (err) => {
                 if (err) return err;
                 try{

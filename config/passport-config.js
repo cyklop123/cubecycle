@@ -1,4 +1,5 @@
 const LocalStrategy = require('passport-local').Strategy;
+const sanitizeHtml = require('sanitize-html')
 
 const User = require('../models/user')
 
@@ -13,6 +14,10 @@ function configure(passport)
         })
     }
     const registrationUser = (req, login, password, done) => {
+        login = sanitizeHtml(login, { allowedTags: [], allowedAttributes: {} })
+        password = sanitizeHtml(password, { allowedTags: [], allowedAttributes: {} })
+        if(login === '' || password === '')
+            return done(null, false, {message: 'Please do not use html tags'})
         User.findOne({ 'login': login }, (err, user) => {
             if(err) return done(err)
             if(user) return done(null, false, {message: 'User with this login exist'})
