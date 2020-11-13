@@ -14,7 +14,11 @@ socket.on('start round', data => {
     resManager.addRound()
 })
 
-socket.on('stop round', () => lockTimer())
+socket.on('stop round', () => {
+    lockTimer()
+    $(window).trigger('keydown')
+    $(window).trigger('keyup')
+})
 
 socket.on('time', data => {
     resManager.addTime(data.user, data.time)

@@ -41,7 +41,7 @@ exports = module.exports = function(passport){
         res.redirect('/')
     });
 
-    router.get('/room/:id', checkAuth, checkUserInRoom, (req, res)=>{
+    router.all('/room/:id', checkAuth, checkUserInRoom, (req, res)=>{
         res.render('pages/room.ejs', {
             title:'Room',
             name: req.user.login,
@@ -65,6 +65,15 @@ async function checkUserInRoom(req, res, next)
 {
     try{
         let room = await Room.findOne({_id: req.params.id})
+        if(room.password)
+        {
+            if(!(req.body.roompass && req.body.roompass === room.password))
+            {
+                req.flash('error', 'Wrong password')
+                res.redirect('/')
+                return;
+            }
+        }
         if (room.users.includes(req.user.id))
         {
             res.redirect('/')
@@ -83,6 +92,7 @@ async function checkUserInRoom(req, res, next)
     }
     catch(err)
     {
+        console.log(err)
         res.redirect('/')
     }
 }

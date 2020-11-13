@@ -36,12 +36,14 @@ io.on('rooms', rooms => {
                 <li class="list-group-item">Timeout: ${room.timeout}s</li>
                 <li class="list-group-item">Admin: jhon1</li>
                 </ul>
-                <div class="card-body">
-                <a href="room/${room._id}" class="btn btn-primary btn-block">Join</a>
-                </div>
-                <div class="card-footer text-muted">
-                ${(room.password) ? 'Private' : 'Public'}
-                </div>
+                <form method="post" action="room/${room._id}">
+                    <div class="card-body">
+                        <button class="btn btn-primary btn-block">Join</button>
+                    </div>
+                    <div class="card-footer text-muted">
+                        ${(room.password) ? '<input type="text" placeholder="Type password" name="roompass" class="form-control form-control-sm" />' : 'Public'}
+                    </div>
+                </form>
             </div>
         </div>`)
     });
