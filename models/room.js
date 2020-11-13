@@ -29,6 +29,11 @@ const roomSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    admin: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
     round: {
         participants:[{
             user_id: {

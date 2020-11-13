@@ -11,7 +11,7 @@ exports = module.exports = function(io) {
         socket.join(roomid)
         checkIfStartOrStopRound(roomid)
         
-        Room.findById(roomid).populate('users').exec((err, room) => {
+        Room.findById(roomid, {users: 1}).populate({path: 'users', select: {login:1}}).exec((err, room) => {
             let users = []
             room.users.forEach(user => users.push(user.login))
             socket.emit('user list', users)

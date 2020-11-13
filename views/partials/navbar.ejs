@@ -6,7 +6,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <form class="form-inline my-2 my-lg-0 ml-auto" action="/logout?_method=DELETE" method="POST">
             <div class="form-group mr-3">
-                <b>Username: </b> <%= name %>
+                <b>Username: </b> <span id="username"><%- name %></span>
             </div>
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Log Out</button>
         </form>
