@@ -1,5 +1,6 @@
 const Room = require('../../models/room')
 const sanitizeHtml = require('sanitize-html')
+const room = require('../../models/room')
 
 exports = module.exports = function(io){
     io.on('connection', async socket => {
@@ -66,7 +67,10 @@ exports = module.exports = function(io){
 async function findAllRooms()
 {
     try{
-        const rooms = await Room.find({},{name:1, timeout:1, type:1, _id:1}).populate({path: 'admin', select:{login: 1}})
+        const rooms = await Room.find({},{name:1, timeout:1, type:1, _id:1, password:1}).populate({path: 'admin', select:{login: 1}})
+        for(var i=0; i<rooms.length; i++)
+            if(rooms[i].password)
+                rooms[i].password = true;
         return rooms.reverse();
     }
     catch(err)
